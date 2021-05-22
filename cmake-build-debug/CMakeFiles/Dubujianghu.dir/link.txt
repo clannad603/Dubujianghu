@@ -1,0 +1,3 @@
+D:\Users\AppDatas\apps\CLion\ch-0\203.7148.70\bin\cmake\win\bin\cmake.exe -E rm -f CMakeFiles\Dubujianghu.dir/objects.a
+C:\Users\huangrui\mingw64\mingw64\bin\ar.exe cr CMakeFiles\Dubujianghu.dir/objects.a @CMakeFiles\Dubujianghu.dir\objects1.rsp
+C:\Users\huangrui\mingw64\mingw64\bin\gcc.exe -g   -Wl,--whole-archive CMakeFiles\Dubujianghu.dir/objects.a -Wl,--no-whole-archive  -o Dubujianghu.exe -Wl,--out-implib,libDubujianghu.dll.a -Wl,--major-image-version,0,--minor-image-version,0 @CMakeFiles\Dubujianghu.dir\linklibs.rsp

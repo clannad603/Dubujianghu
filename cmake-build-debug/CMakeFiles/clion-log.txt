@@ -1,0 +1,11 @@
+D:\Users\AppDatas\apps\CLion\ch-0\203.7148.70\bin\cmake\win\bin\cmake.exe -DCMAKE_BUILD_TYPE=Debug -G "CodeBlocks - MinGW Makefiles" D:\Users\huangrui\CLionProjects\dubujianghu
+-- The C compiler identification is GNU 8.1.0
+-- Check for working C compiler: C:/Users/huangrui/mingw64/mingw64/bin/gcc.exe
+-- Check for working C compiler: C:/Users/huangrui/mingw64/mingw64/bin/gcc.exe - works
+-- Detecting C compiler ABI info
+-- Detecting C compiler ABI info - done
+-- Detecting C compile features
+-- Detecting C compile features - done
+-- Configuring done
+-- Generating done
+-- Build files have been written to: D:/Users/huangrui/CLionProjects/dubujianghu/cmake-build-debug
