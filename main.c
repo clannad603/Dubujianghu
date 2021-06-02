@@ -15,7 +15,7 @@ struct Role {
     int ATK;  // 攻击力
     int Speed;  // 速度
     int EXP;  // 经验值
-    char Skill[1024]; // 技能面板
+    char Skill[20]; // 技能面板
 
 } user;
 
@@ -53,7 +53,7 @@ void rCreate(); // 角色创建
 void action(); // 角色行为
 void myPrint(struct Role *role); // 打印角色信息,船体结构体指针的方式，提高效率
 void reBack(); // 门派信息
-
+void addSkill();//添加技能
 void adv(); // 历练
 void shop(); // 装备商店,暂无内容
 void lvUp(); // 人物升级
@@ -66,7 +66,7 @@ void addMonster(struct Monster *monster);  // 添加怪物
 void releaseMonster(struct Monster *monster);  // 释放内存空间
 void wearEquip();
 
-int rank=1;//记录打怪波数，随着波数增加，怪也会越来越强
+int rank = 1;//记录打怪波数，随着波数增加，怪也会越来越强
 int main() {
     int ac; // 角色行为的选择
     start();
@@ -96,12 +96,14 @@ int main() {
 
     return 0;
 }
+
 //穿戴装备
-void wearEquip(){
-    user.Speed+=equip.Speed;
-    user.HP+=equip.HP;
-    user.ATK+=equip.ATK;
+void wearEquip() {
+    user.Speed += equip.Speed;
+    user.HP += equip.HP;
+    user.ATK += equip.ATK;
 }
+
 // 角色行为板块
 void start() {
     int temp;
@@ -129,8 +131,7 @@ void start() {
                 printf("没有检测到游戏存档，请选择新的开始！\n");
                 system("pause");
             }
-        } else
-        {
+        } else {
             printf("请输入正确的操作指令！\n");
             system("pause");
         }
@@ -252,6 +253,8 @@ void myPrint(struct Role *User) {
     printf("武力: %d\n", User->ATK);
     printf("身法: %d\n", User->Speed);
     printf("阅历值: %d\n", User->EXP);
+    printf("技能: %s\n", User->Skill);
+
     printf("==============================\n");
 
     sleep(1);
@@ -259,6 +262,31 @@ void myPrint(struct Role *User) {
 
 }
 
+void addSkill() {
+    printf("欢迎进入技能学习界面\n");
+    printf("你现在可以学习以下技能\n");
+    printf("1.狂暴技能->没啥用的加20攻击\n");
+    printf("2.固化技能->受到伤害降低30%\n");
+    printf("3.厚的一批的血->血量临时加100\n");
+    int c;
+    scanf("%d", &c);
+    switch (c) {
+        case 1:
+            printf("你获得了狂暴技能\n");
+            strcpy(user.Skill, "狂暴");
+            break;
+        case 2:
+            printf("你获得了固化技能\n");
+            strcpy(user.Skill, "固化");
+            break;
+        case 3:
+            printf("你获得了血厚技能\n");
+            strcpy(user.Skill, "血厚");
+            break;
+    }
+
+
+}
 
 // 门派板块函数
 void reBack() {
@@ -278,11 +306,12 @@ void reBack() {
         scanf("%d", &temp);
 
         if (temp == 1) {
-            if (user.Lv <= 10) {
+            if (user.Lv <=3) {
                 printf("你的阅历不足，长老禁止你进入大殿！\n");
                 printf("当前阅历: %d\n", user.Lv);
                 sleep(2);
-
+            } else {
+                addSkill();
             }
 
         } else if (temp == 2) {
@@ -316,7 +345,7 @@ void shop() {
     printf("========装备系统载入完成========\n");
     printf("本店来了以下装备\n");
     printf("客官，您带了多少钱呢\n");
-    printf("我带了%d两白银\n",bag.gold);
+    printf("我带了%d两白银\n", bag.gold);
     int choice;
     while (1) {
         int flag = 0;
@@ -329,8 +358,8 @@ void shop() {
             case 1:
                 if (bag.gold > 50) {
                     equip.ATK += 10;
-                    flag=1;
-                    bag.gold-=50;
+                    flag = 1;
+                    bag.gold -= 50;
                 } else {
                     printf("钱不够买甚麽？\n");
                 }
@@ -338,39 +367,40 @@ void shop() {
             case 2:
                 if (bag.gold > 100) {
                     equip.ATK += 50;
-                    flag=1;
-                    bag.gold-=100;
+                    flag = 1;
+                    bag.gold -= 100;
                 } else {
                     printf("钱不够买甚麽？\n");
                 }
                 break;
             case 3:
                 if (bag.gold > 50) {
-                    equip.HP+= 10;
-                    flag=1;
-                    bag.gold-=50;
+                    equip.HP += 10;
+                    flag = 1;
+                    bag.gold -= 50;
                 } else {
                     printf("钱不够买甚麽？\n");
                 }
                 break;
             case 4:
                 if (bag.gold > 100) {
-                    equip.Speed+= 10;
-                    flag=1;
-                    bag.gold-=100;
+                    equip.Speed += 10;
+                    flag = 1;
+                    bag.gold -= 100;
                 } else {
                     printf("钱不够买甚麽？\n");
                 }
                 break;
         }
-        if (flag){
-            printf("您还剩%d两白银\n",bag.gold);
+        if (flag) {
+            printf("您还剩%d两白银\n", bag.gold);
             printf("慢走,下次在来\n");
             break;
         }
     }
 
 }
+
 void lvUp() {
     /*  角色基础属性数值
      *  HP  200
@@ -431,22 +461,22 @@ void addMonster(struct Monster *Head)   // 尾插法添加怪物数据
      * */
     p = Head;
     int random = 0;
-    random = randData(1,5);
+    random = randData(1, 5);
     for (int i = 0; i < random; i++) {
         mons = (struct Monster *) malloc(sizeof(struct Monster));  // 新建结构体单元，并分配内存
         if (mons == NULL) {
             printf("内存分配失败");
             exit(1);
         }
-        if (user.Lv <= 10&&random!=2) {
-            tempHP = randData(120+rank, 170+rank);
-            tempATK = randData(30+rank%10, 50+rank%10);
-            tempSpeed = randData(7+rank%5, 12+rank%5);
+        if (user.Lv <= 5 && random != 2) {
+            tempHP = randData(120 + rank, 170 + rank);
+            tempATK = randData(30 + rank % 10, 50 + rank % 10);
+            tempSpeed = randData(7 + rank % 5, 12 + rank % 5);
             strcpy(mons->name, "发狂野兽");
-        } else if ((user.Lv > 10 && user.Lv <= 30)||random==2) {
-            tempHP = randData(2000+rank, 2700+rank);
-            tempATK = randData(250+rank%10, 350+rank%10);
-            tempSpeed = randData(150+rank%5, 260+rank%5);
+        } else if ((user.Lv > 5 && user.Lv <= 10) || random == 2) {
+            tempHP = randData(2000 + rank, 2700 + rank);
+            tempATK = randData(250 + rank % 10, 350 + rank % 10);
+            tempSpeed = randData(150 + rank % 5, 260 + rank % 5);
             strcpy(mons->name, "日月教弟子");
         }
 
@@ -487,37 +517,61 @@ int randData(int Min, int Max) {
 void fight(struct Monster *Head) {
     struct Monster *mons;
     mons = Head->next;
-
     int userHP, monHP;
     int count = 1;
-
+    int userAtk = user.ATK;
+    int hash;
+    userHP = user.HP;
+    hash = randData(1, 5);
+    if (hash == 1) {
+        printf("这里视乎环境发生异变，你的伤害降低了\n");
+        user.ATK %= 100;
+        sleep(1);
+    }
+    if (hash == 2) {
+        printf("此处有仙灵之气，你的伤害获得了30%的提高\n");
+        user.ATK = userAtk * (1.3);
+        sleep(1);
+    }
+    if (hash == 3) {
+        printf("此处有隐藏宝箱，捡到了银量%d\n", randData(rank * 10, rank * 12));
+        sleep(2);
+    }
     while (mons != NULL) {
-
+        monHP = mons->HP;
+        int has;
+        has = randData(4,6);
+         if ((strcasecmp(user.Skill, "狂暴") == 0)&&has==4) {
+             printf("发动技能狂暴\n");
+             user.ATK=user.ATK*1.3;
+         }
+         if ((strcasecmp(user.Skill, "固化") == 0)&&has==5) {
+             printf("发动技能固化\n");
+             mons->ATK=mons->ATK*0.7;
+         }
+        if ((strcasecmp(user.Skill, "血厚") == 0)&&has==5) {
+            printf("发动技能血厚\n");
+            userHP += 100;
+        }
         printf("遭遇：%s%d\n", mons->name, count);
         sleep(2);
 
-        userHP = user.HP;
-        monHP = mons->HP;
-        if (user.Speed-mons->Speed>=100){
+        if (user.Speed - mons->Speed >= 50) {
             printf("由于速度太快,怪根本打不动你，你直接边缘op完了\n");
-            mons = mons->next;
-            count++;
             break;
         }
         if (mons->Speed > user.Speed) {
             // 怪物先手攻击
             while (monHP > 0 || userHP > 0) {
                 int rand;
-                rand = randData(1,3);
+                rand = randData(1, 3);
                 userHP -= mons->ATK;
                 if (userHP <= 0) {
                     userHP = 0;
                 }
-                if (rand==1){
-                    if (monHP<user.ATK){
-                        printf("这个不怎么聪明的怪视乎发狂了\n");
-                        mons->ATK+=20;
-                    }
+                if (rand == 1) {
+                    printf("这个不怎么聪明的怪视乎发狂了\n");
+                    mons->ATK += 100;
                 }
                 printf("%s%d 对你造成了 %d 点伤害，你当前剩余生命值： %d\n", mons->name, count, mons->ATK, userHP);
                 if (userHP <= 0) {
@@ -553,11 +607,16 @@ void fight(struct Monster *Head) {
         } else {
             // 角色先手攻击
             while (monHP > 0 || userHP > 0) {
+                int rand;
+                rand = randData(1, 3);
                 monHP -= user.ATK;
                 if (monHP <= 0) {
                     monHP = 0;
                 }
-
+                if (rand == 1) {
+                    printf("这个不怎么聪明的怪视乎发狂了\n");
+                    mons->ATK += 30;
+                }
                 printf("你对 %s%d 造成了 %d 伤害，%s%d 当前剩余生命值： %d\n", mons->name, count, user.ATK, mons->name, count, monHP);
                 if (monHP <= 0) {
                     monHP = 0;
@@ -586,7 +645,7 @@ void fight(struct Monster *Head) {
                 system("pause");
                 return;
             } else {
-                printf("你战胜了%s%d ,获得 30 阅历值！\n", mons->name,count);
+                printf("你战胜了%s%d ,获得 30 阅历值！\n", mons->name, count);
                 user.EXP += 30;
                 system("pause");
             }
@@ -597,11 +656,11 @@ void fight(struct Monster *Head) {
         count++;
 
     }
-
-    printf("你战胜了全部的怪,恭喜你，%s ！\n",  user.name);
-    bag.gold+=randData(100,300);
-    printf("你获得了%d两没什么用的银量\n",bag.gold);
-    rank+=10;
+    user.ATK = userAtk;
+    printf("你战胜了全部的怪,恭喜你，%s ！\n", user.name);
+    bag.gold += randData(100, 200);
+    printf("你获得了%d两没什么用的银量\n", bag.gold);
+    rank += 10;
     system("pause");
 
 }
@@ -644,13 +703,13 @@ void mesSave() {
     fputs(itoa(user.Lv, temp, 10), fp);   // 角色等级
     fputs("\n", fp);    // 回车换行
 
-    fputs(itoa(user.HP-equip.HP, temp, 10), fp);   // 角色生命值
+    fputs(itoa(user.HP - equip.HP, temp, 10), fp);   // 角色生命值
     fputs("\n", fp);    // 回车换行
 
-    fputs(itoa(user.ATK-equip.ATK, temp, 10), fp);  // 角色攻击
+    fputs(itoa(user.ATK - equip.ATK, temp, 10), fp);  // 角色攻击
     fputs("\n", fp);    // 回车换行
 
-    fputs(itoa(user.Speed-equip.Speed, temp, 10), fp);  // 角色速度
+    fputs(itoa(user.Speed - equip.Speed, temp, 10), fp);  // 角色速度
     fputs("\n", fp);    // 回车换行
 
     fputs(itoa(user.EXP, temp, 10), fp);  // 角色经验值
@@ -721,7 +780,7 @@ void mesRead() {
     }
     if (fgets(buf, 64, fp) != NULL)       // 读取钱
     {
-        bag.gold= atoi(buf);
+        bag.gold = atoi(buf);
     }
 
 }
@@ -743,7 +802,7 @@ void startPrint() {
 }
 
 void advStart() {
-    if (user.Lv <= 10) {
+    if (user.Lv <= 5) {
         printf("门派的炼丹房近日缺少一批灵药\n");
         sleep(1);
         printf("地点位于万界森林边缘，不会遇到太过凶猛的野兽\n");
@@ -756,7 +815,7 @@ void advStart() {
 
         sleep(2);
         system("pause");
-    } else if (user.Lv > 10 && user.Lv <= 30) {
+    } else if (user.Lv > 5 && user.Lv <= 10) {
         printf("日月教今日愈发猖狂，已经隐隐在大奉周边活动....\n");
         sleep(1);
         printf("你需要去抓几个探子，知道他们潜藏的目的...\n");
