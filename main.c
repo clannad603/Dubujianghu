@@ -525,7 +525,7 @@ void fight(struct Monster *Head) {
     hash = randData(1, 5);
     if (hash == 1) {
         printf("这里视乎环境发生异变，你的伤害降低了\n");
-        user.ATK %= 100;
+        user.ATK -=30;
         sleep(1);
     }
     if (hash == 2) {
@@ -534,7 +534,7 @@ void fight(struct Monster *Head) {
         sleep(1);
     }
     if (hash == 3) {
-        printf("此处有隐藏宝箱，捡到了银量%d\n", randData(rank * 10, rank * 12));
+        printf("此处有隐藏宝箱，捡到了银两%d\n", randData(rank * 10, rank * 12));
         sleep(2);
     }
     while (mons != NULL) {
@@ -718,6 +718,9 @@ void mesSave() {
     fputs(itoa(bag.gold, temp, 10), fp);  // 角色钱
     fputs("\n", fp);    // 回车换行
 
+    fputs(user.Skill, fp);  // 角色技能
+    fputs("\n", fp);    // 回车换行
+
     fputs("EOF\n", fp);  // 内容结束
 
 
@@ -782,7 +785,10 @@ void mesRead() {
     {
         bag.gold = atoi(buf);
     }
-
+    if (fgets(buf, 64, fp) != NULL)       // 读取钱
+    {
+        strcpy(user.Skill,buf);
+    }
 }
 
 
